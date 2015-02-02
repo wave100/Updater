@@ -18,11 +18,11 @@ public class Updater {
 
     /**
      */
-    public static final String SOFTWARE_VERSION_PATH = System.getProperty("user.home") + System.getProperty("file.separator") + ".schoolchecker" + System.getProperty("file.separator");
-    public static final String SOFTWARE_VERSION_PROPERTIES_FILE = "persistence.properties";
-    public static final String LATEST_VERSION_URL = "http://rishshadra.me/schoolchecker/updater/version.txt";
-    public static final String LATEST_PROGRAM_URL = "http://rishshadra.me/schoolchecker/SchoolChecker.jar";
-
+    public static String SOFTWARE_VERSION_PATH = System.getProperty("user.home") + System.getProperty("file.separator") + ".schoolchecker" + System.getProperty("file.separator");
+    public static String SOFTWARE_VERSION_PROPERTIES_FILE = "persistence.properties";
+    public static String LATEST_VERSION_URL = "http://rishshadra.me/schoolchecker/updater/version.txt";
+    public static String LATEST_PROGRAM_URL = "http://rishshadra.me/schoolchecker/SchoolChecker.jar";
+    public static boolean silent = false;
     /**
      *
      * @param args
@@ -31,7 +31,27 @@ public class Updater {
     
     public static void main(String[] args) throws IOException {
         
-        InfoWindow.main(new String[0]);
+        //if args.length == 3
+        //args[0] = path (String)
+        //args[1] = file name (String)
+        //args[2] = silent (boolean)
+        
+        //if args.length == 1
+        //args[0] = silent (boolean)
+        
+        if (args.length == 3) {
+            SOFTWARE_VERSION_PATH = args[0];
+            SOFTWARE_VERSION_PROPERTIES_FILE = args[1];
+            silent = Boolean.parseBoolean(args[2]);
+        } else if (args.length == 1) {
+            silent = Boolean.parseBoolean(args[0]);
+        } else {
+            System.out.println("Malformed arguments, assuming default values.");
+        }
+        
+        if (!silent) {
+            InfoWindow.main(new String[0]);
+        }
         
         if (VersionChecker.checkVersion(SOFTWARE_VERSION_PATH, SOFTWARE_VERSION_PROPERTIES_FILE)) {
             FileOperations.downloadAndOverwriteFile(new URL(LATEST_PROGRAM_URL), VersionChecker.getInstallPath(SOFTWARE_VERSION_PATH, SOFTWARE_VERSION_PROPERTIES_FILE));
