@@ -45,6 +45,8 @@ public class Updater {
             silent = Boolean.parseBoolean(args[2]);
         } else if (args.length == 1) {
             silent = Boolean.parseBoolean(args[0]);
+        } else if (args.length == 0) {
+            System.out.println("No arguments, assuming default values.");
         } else {
             System.out.println("Malformed arguments, assuming default values.");
         }
